@@ -300,6 +300,8 @@
     <xs:attribute name="length" type="xs:NMTOKEN" />
     <xs:attribute name="unique" type="xs:boolean" default="false" />
     <xs:attribute name="nullable" type="xs:boolean" default="false" />
+    <xs:attribute name="insertable" type="xs:boolean" default="true" />
+    <xs:attribute name="updatable" type="xs:boolean" default="true" />
     <xs:attribute name="version" type="xs:boolean" />
     <xs:attribute name="column-definition" type="xs:string" />
     <xs:attribute name="precision" type="xs:integer" use="optional" />
@@ -612,6 +614,8 @@
     <xs:attribute name="length" type="xs:NMTOKEN" />
     <xs:attribute name="unique" type="xs:boolean" default="false" />
     <xs:attribute name="nullable" type="xs:boolean" default="false" />
+    <xs:attribute name="insertable" type="xs:boolean" default="true" />
+    <xs:attribute name="updatable" type="xs:boolean" default="true" />
     <xs:attribute name="version" type="xs:boolean" />
     <xs:attribute name="column-definition" type="xs:string" />
     <xs:attribute name="precision" type="xs:integer" use="optional" />

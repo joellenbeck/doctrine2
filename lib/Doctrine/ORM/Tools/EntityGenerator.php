@@ -1664,6 +1664,14 @@ public function __construct(<params>)
                 $column[] = 'nullable=' .  var_export($fieldMapping['nullable'], true);
             }
 
+            if (isset($fieldMapping['insertable'])) {
+                $column[] = 'insertable=' .  var_export($fieldMapping['insertable'], true);
+            }
+
+            if (isset($fieldMapping['updatable'])) {
+                $column[] = 'updatable=' .  var_export($fieldMapping['updatable'], true);
+            }
+
             $options = [];
 
             if (isset($fieldMapping['options']['default']) && $fieldMapping['options']['default']) {

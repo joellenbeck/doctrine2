@@ -98,6 +98,34 @@ class FieldBuilder
     }
 
     /**
+     * Sets insertable.
+     *
+     * @param bool $flag
+     *
+     * @return FieldBuilder
+     */
+    public function insertable($flag = true)
+    {
+        $this->mapping['insertable'] = (bool) $flag;
+
+        return $this;
+    }
+
+    /**
+     * Sets updatable.
+     *
+     * @param bool $flag
+     *
+     * @return FieldBuilder
+     */
+    public function updatable($flag = true)
+    {
+        $this->mapping['updatable'] = (bool) $flag;
+
+        return $this;
+    }
+
+    /**
      * Sets Unique.
      *
      * @param bool $flag

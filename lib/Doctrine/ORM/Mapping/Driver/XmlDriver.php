@@ -768,6 +768,14 @@ class XmlDriver extends FileDriver
             $mapping['nullable'] = $this->evaluateBoolean($fieldMapping['nullable']);
         }
 
+        if (isset($fieldMapping['insertable'])) {
+            $mapping['insertable'] = $this->evaluateBoolean($fieldMapping['insertable']);
+        }
+
+        if (isset($fieldMapping['updatable'])) {
+            $mapping['updatable'] = $this->evaluateBoolean($fieldMapping['updatable']);
+        }
+
         if (isset($fieldMapping['version']) && $fieldMapping['version']) {
             $mapping['version'] = $this->evaluateBoolean($fieldMapping['version']);
         }
