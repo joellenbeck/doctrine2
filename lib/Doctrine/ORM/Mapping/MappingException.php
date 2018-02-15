@@ -820,4 +820,16 @@ class MappingException extends \Doctrine\ORM\ORMException
             )
         );
     }
+
+    /**
+     * @param $className
+     * @param $fieldName
+     * @return MappingException
+     */
+    public static function invalidUpdatableMapping($className, $fieldName)
+    {
+        return new self(
+            sprintf('Tried to update the column "%s::%s", although the updatable column mapping is set to "false"', $className, $fieldName)
+        );
+    }
 }

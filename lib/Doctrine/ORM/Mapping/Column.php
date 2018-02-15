@@ -65,6 +65,16 @@ final class Column implements Annotation
     public $nullable = false;
 
     /**
+     * @var boolean
+     */
+    public $insertable = true;
+
+    /**
+     * @var boolean
+     */
+    public $updatable = true;
+
+    /**
      * @var array
      */
     public $options = [];
