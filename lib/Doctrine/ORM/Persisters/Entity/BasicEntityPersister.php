@@ -396,15 +396,16 @@ class BasicEntityPersister implements EntityPersister
      * Performs an UPDATE statement for an entity on a specific table.
      * The UPDATE can optionally be versioned, which requires the entity to have a version field.
      *
-     * @param object  $entity          The entity object being updated.
-     * @param string  $quotedTableName The quoted name of the table to apply the UPDATE on.
-     * @param array   $updateData      The map of columns to update (column => value).
-     * @param boolean $versioned       Whether the UPDATE should be versioned.
+     * @param object $entity The entity object being updated.
+     * @param string $quotedTableName The quoted name of the table to apply the UPDATE on.
+     * @param array $updateData The map of columns to update (column => value).
+     * @param boolean $versioned Whether the UPDATE should be versioned.
      *
      * @return void
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\DBAL\DBALException
      */
     protected final function updateTable($entity, $quotedTableName, array $updateData, $versioned = false)
     {
@@ -618,6 +619,7 @@ class BasicEntityPersister implements EntityPersister
      * @param object $entity The entity for which to prepare the data.
      *
      * @return array The prepared data.
+     * @throws MappingException
      */
     protected function prepareUpdateData($entity)
     {
@@ -630,6 +632,10 @@ class BasicEntityPersister implements EntityPersister
         }
 
         foreach ($uow->getEntityChangeSet($entity) as $field => $change) {
+            if( ! $this->class->isUpdatable($field)) {
+                throw MappingException::invalidUpdatableMapping(get_class($entity), $field);
+            }
+
             if (isset($versionField) && $versionField == $field) {
                 continue;
             }
@@ -1446,6 +1452,10 @@ class BasicEntityPersister implements EntityPersister
             }
 
             if (isset($this->class->embeddedClasses[$name])) {
+                continue;
+            }
+
+            if (!$this->class->isInsertable($name)) {
                 continue;
             }
 

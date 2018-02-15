@@ -92,6 +92,42 @@ class ClassMetadataTest extends OrmTestCase
         $this->assertFalse($cm->isNullable('name'), "By default a field should not be nullable.");
     }
 
+    public function testFieldIsInsertable()
+    {
+        $cm = new ClassMetadata(CMS\CmsUser::class);
+        $cm->initializeReflection(new RuntimeReflectionService());
+
+        // Explicit Nullable
+        $cm->mapField(['fieldName' => 'status', 'insertable' => true, 'type' => 'string', 'length' => 50]);
+        $this->assertTrue($cm->isInsertable('status'));
+
+        // Explicit Not Nullable
+        $cm->mapField(['fieldName' => 'username', 'insertable' => false, 'type' => 'string', 'length' => 50]);
+        $this->assertFalse($cm->isInsertable('username'));
+
+        // Implicit Not Nullable
+        $cm->mapField(['fieldName' => 'name', 'type' => 'string', 'length' => 50]);
+        $this->assertTrue($cm->isInsertable('name'), "By default a field should be insertable.");
+    }
+
+    public function testFieldIsUpdatable()
+    {
+        $cm = new ClassMetadata(CMS\CmsUser::class);
+        $cm->initializeReflection(new RuntimeReflectionService());
+
+        // Explicit Nullable
+        $cm->mapField(['fieldName' => 'status', 'updatable' => true, 'type' => 'string', 'length' => 50]);
+        $this->assertTrue($cm->isUpdatable('status'));
+
+        // Explicit Not Nullable
+        $cm->mapField(['fieldName' => 'username', 'updatable' => false, 'type' => 'string', 'length' => 50]);
+        $this->assertFalse($cm->isUpdatable('username'));
+
+        // Implicit Not Nullable
+        $cm->mapField(['fieldName' => 'name', 'type' => 'string', 'length' => 50]);
+        $this->assertTrue($cm->isUpdatable('name'), "By default a field should be updatable.");
+    }
+
     /**
      * @group DDC-115
      */
