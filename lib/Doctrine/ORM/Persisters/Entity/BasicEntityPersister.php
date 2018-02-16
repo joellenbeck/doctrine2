@@ -1455,6 +1455,10 @@ class BasicEntityPersister implements EntityPersister
                 continue;
             }
 
+            if (!$this->class->isInsertable($name)) {
+                continue;
+            }
+
             if (isset($this->class->associationMappings[$name])) {
                 $assoc = $this->class->associationMappings[$name];
 
@@ -1464,10 +1468,6 @@ class BasicEntityPersister implements EntityPersister
                     }
                 }
 
-                continue;
-            }
-
-            if (!$this->class->isInsertable($name)) {
                 continue;
             }
 
