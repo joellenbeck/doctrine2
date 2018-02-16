@@ -653,6 +653,10 @@ class BasicEntityPersister implements EntityPersister
 
                 $this->columnTypes[$columnName] = $fieldMapping['type'];
 
+                if ($forInsert && !$this->class->isInsertable($field)) {
+                    continue;
+                }
+
                 $result[$this->getOwningTable($field)][$columnName] = $newVal;
 
                 continue;
