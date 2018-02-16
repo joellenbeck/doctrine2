@@ -1442,6 +1442,7 @@ class BasicEntityPersister implements EntityPersister
      * columns placed in the INSERT statements used by the persister.
      *
      * @return array The list of columns.
+     * @throws MappingException
      */
     protected function getInsertColumnList()
     {
@@ -1456,10 +1457,6 @@ class BasicEntityPersister implements EntityPersister
                 continue;
             }
 
-            if (!$this->class->isInsertable($name)) {
-                continue;
-            }
-
             if (isset($this->class->associationMappings[$name])) {
                 $assoc = $this->class->associationMappings[$name];
 
@@ -1469,6 +1466,10 @@ class BasicEntityPersister implements EntityPersister
                     }
                 }
 
+                continue;
+            }
+
+            if (!$this->class->isInsertable($name)) {
                 continue;
             }
 
