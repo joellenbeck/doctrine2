@@ -618,6 +618,7 @@ class BasicEntityPersister implements EntityPersister
      *
      * @param object $entity The entity for which to prepare the data.
      *
+     * @param bool $forInsert
      * @return array The prepared data.
      * @throws MappingException
      */
