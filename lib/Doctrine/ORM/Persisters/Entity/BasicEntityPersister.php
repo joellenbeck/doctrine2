@@ -633,10 +633,6 @@ class BasicEntityPersister implements EntityPersister
         }
 
         foreach ($uow->getEntityChangeSet($entity) as $field => $change) {
-            if( !$forInsert && !$this->class->isUpdatable($field)) {
-                throw MappingException::invalidUpdatableMapping(get_class($entity), $field);
-            }
-
             if (isset($versionField) && $versionField == $field) {
                 continue;
             }
@@ -651,11 +647,15 @@ class BasicEntityPersister implements EntityPersister
                 $fieldMapping = $this->class->fieldMappings[$field];
                 $columnName   = $fieldMapping['columnName'];
 
-                $this->columnTypes[$columnName] = $fieldMapping['type'];
+                if (!$forInsert && !$this->class->isUpdatable($field)) {
+                    throw MappingException::invalidUpdatableMapping(get_class($entity), $field);
+                }
 
                 if ($forInsert && !$this->class->isInsertable($field)) {
                     continue;
                 }
+
+                $this->columnTypes[$columnName] = $fieldMapping['type'];
 
                 $result[$this->getOwningTable($field)][$columnName] = $newVal;
 
