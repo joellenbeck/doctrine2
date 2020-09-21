@@ -773,6 +773,14 @@ class YamlDriver extends FileDriver
             $mapping['nullable'] = $column['nullable'];
         }
 
+        if (isset($column['insertable'])) {
+            $mapping['insertable'] = $column['insertable'];
+        }
+
+        if (isset($column['updatable'])) {
+            $mapping['updatable'] = $column['updatable'];
+        }
+
         if (isset($column['version']) && $column['version']) {
             $mapping['version'] = $column['version'];
         }

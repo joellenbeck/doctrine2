@@ -408,6 +408,7 @@ class BasicEntityPersister implements EntityPersister
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\DBAL\DBALException
      */
     protected final function updateTable($entity, $quotedTableName, array $updateData, $versioned = false)
     {
@@ -601,9 +602,11 @@ class BasicEntityPersister implements EntityPersister
      *
      * @param object $entity The entity for which to prepare the data.
      *
+     * @param bool $forInsert
      * @return array The prepared data.
+     * @throws MappingException
      */
-    protected function prepareUpdateData($entity)
+    protected function prepareUpdateData($entity, $forInsert = false)
     {
         $versionField = null;
         $result       = [];
@@ -627,6 +630,14 @@ class BasicEntityPersister implements EntityPersister
             if ( ! isset($this->class->associationMappings[$field])) {
                 $fieldMapping = $this->class->fieldMappings[$field];
                 $columnName   = $fieldMapping['columnName'];
+
+                if (!$forInsert && !$this->class->isUpdatable($field)) {
+                    throw MappingException::invalidUpdatableMapping(get_class($entity), $field);
+                }
+
+                if ($forInsert && !$this->class->isInsertable($field)) {
+                    continue;
+                }
 
                 $this->columnTypes[$columnName] = $fieldMapping['type'];
 
@@ -694,7 +705,7 @@ class BasicEntityPersister implements EntityPersister
      */
     protected function prepareInsertData($entity)
     {
-        return $this->prepareUpdateData($entity);
+        return $this->prepareUpdateData($entity, true);
     }
 
     /**
@@ -1419,6 +1430,7 @@ class BasicEntityPersister implements EntityPersister
      * columns placed in the INSERT statements used by the persister.
      *
      * @return array The list of columns.
+     * @throws MappingException
      */
     protected function getInsertColumnList()
     {
@@ -1442,6 +1454,10 @@ class BasicEntityPersister implements EntityPersister
                     }
                 }
 
+                continue;
+            }
+
+            if (!$this->class->isInsertable($name)) {
                 continue;
             }
 

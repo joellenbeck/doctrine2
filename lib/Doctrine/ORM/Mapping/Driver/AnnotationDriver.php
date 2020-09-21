@@ -631,13 +631,15 @@ class AnnotationDriver extends AbstractAnnotationDriver
     private function columnToArray($fieldName, Mapping\Column $column)
     {
         $mapping = [
-            'fieldName' => $fieldName,
-            'type'      => $column->type,
-            'scale'     => $column->scale,
-            'length'    => $column->length,
-            'unique'    => $column->unique,
-            'nullable'  => $column->nullable,
-            'precision' => $column->precision
+            'fieldName'  => $fieldName,
+            'type'       => $column->type,
+            'scale'      => $column->scale,
+            'length'     => $column->length,
+            'unique'     => $column->unique,
+            'nullable'   => $column->nullable,
+            'insertable' => $column->insertable,
+            'updatable'  => $column->updatable,
+            'precision'  => $column->precision
         ];
 
         if ($column->options) {

@@ -225,6 +225,14 @@ class XmlExporter extends AbstractExporter
                 if (isset($field['nullable'])) {
                     $fieldXml->addAttribute('nullable', $field['nullable'] ? 'true' : 'false');
                 }
+
+                if (isset($field['insertable'])) {
+                    $fieldXml->addAttribute('insertable', $field['insertable'] ? 'true' : 'false');
+                }
+
+                if (isset($field['updatable'])) {
+                    $fieldXml->addAttribute('updatable', $field['updatable'] ? 'true' : 'false');
+                }
             }
         }
 

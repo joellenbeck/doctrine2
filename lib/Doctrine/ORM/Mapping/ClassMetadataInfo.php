@@ -381,6 +381,12 @@ class ClassMetadataInfo implements ClassMetadata
      * - <b>nullable</b> (boolean, optional)
      * Whether the column is nullable. Defaults to FALSE.
      *
+     * - <b>insertable</b> (boolean, optional)
+     * Whether the column is insertable. Defaults to TRUE.
+     *
+     * - <b>updatable</b> (boolean, optional)
+     * Whether the column is updatable. Defaults to TRUE.
+     *
      * - <b>columnDefinition</b> (string, optional, schema-only)
      * The SQL fragment that is used when generating the DDL for the column.
      *
@@ -1203,6 +1209,34 @@ class ClassMetadataInfo implements ClassMetadata
         $mapping = $this->getFieldMapping($fieldName);
 
         return false !== $mapping && isset($mapping['nullable']) && $mapping['nullable'];
+    }
+
+    /**
+     * Checks if the field must be included on inserts.
+     *
+     * @param string $fieldName The field name.
+     *
+     * @return boolean TRUE if the field is insertable, FALSE otherwise.
+     * @throws MappingException
+     */
+    public function isInsertable($fieldName)
+    {
+        $mapping = $this->getFieldMapping($fieldName);
+        return false !== $mapping && ((isset($mapping['insertable']) && $mapping['insertable']) || !isset($mapping['insertable']));
+    }
+
+    /**
+     * Checks if the field must be included on updates, if changed.
+     *
+     * @param string $fieldName The field name.
+     *
+     * @return boolean TRUE if the field is updatable, FALSE otherwise.
+     * @throws MappingException
+     */
+    public function isUpdatable($fieldName)
+    {
+        $mapping = $this->getFieldMapping($fieldName);
+        return false !== $mapping && ((isset($mapping['updatable']) && $mapping['updatable']) || !isset($mapping['updatable']));
     }
 
     /**
